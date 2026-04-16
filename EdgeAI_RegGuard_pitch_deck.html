@@ -1,0 +1,228 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&family=Space+Mono:wght@400;700&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#0a0e1a;--surface:#111827;--card:#161d2e;--border:#1e2d47;
+    --accent:#00d4aa;--accent2:#ff6b35;--accent3:#4f9cf9;
+    --text:#e8f0fe;--muted:#7a8ba8;--dim:#3a4a64;
+    --font:'Syne',sans-serif;--mono:'Space Mono',monospace;
+  }
+  body{background:var(--bg);color:var(--text);font-family:var(--font);overflow-x:hidden}
+  .deck{width:100%;max-width:900px;margin:0 auto;padding:24px 20px 40px}
+  .slide{border:1px solid var(--border);border-radius:16px;padding:32px 36px;margin-bottom:20px;background:var(--card);position:relative;overflow:hidden}
+  .slide::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+  .slide.accent-green::before{background:var(--accent)}
+  .slide.accent-orange::before{background:var(--accent2)}
+  .slide.accent-blue::before{background:var(--accent3)}
+  .slide.accent-multi::before{background:linear-gradient(90deg,var(--accent),var(--accent3),var(--accent2))}
+  .tag{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:4px;margin-bottom:14px;border:1px solid}
+  .tag-green{color:var(--accent);border-color:var(--accent);background:rgba(0,212,170,0.08)}
+  .tag-orange{color:var(--accent2);border-color:var(--accent2);background:rgba(255,107,53,0.08)}
+  .tag-blue{color:var(--accent3);border-color:var(--accent3);background:rgba(79,156,249,0.08)}
+  h1{font-size:clamp(28px,5vw,46px);font-weight:800;line-height:1.1;margin-bottom:10px}
+  h2{font-size:clamp(20px,3vw,28px);font-weight:700;margin-bottom:16px;color:var(--text)}
+  h3{font-size:16px;font-weight:700;margin-bottom:8px;color:var(--text)}
+  p{color:var(--muted);font-size:15px;line-height:1.7}
+  .hero-sub{font-size:clamp(15px,2.5vw,20px);color:var(--muted);max-width:600px;margin-bottom:24px;line-height:1.6}
+  .badge-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+  .badge{font-family:var(--mono);font-size:11px;padding:5px 12px;border-radius:6px;background:rgba(255,255,255,0.04);border:1px solid var(--dim);color:var(--muted)}
+  .stat-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin:20px 0}
+  .stat{background:rgba(255,255,255,0.03);border:1px solid var(--dim);border-radius:10px;padding:16px 14px;text-align:center}
+  .stat-num{font-family:var(--mono);font-size:26px;font-weight:700;line-height:1.2}
+  .stat-label{font-size:11px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:0.5px}
+  .green{color:var(--accent)}.orange{color:var(--accent2)}.blue{color:var(--accent3)}
+  .flow{display:flex;flex-wrap:wrap;gap:0;align-items:stretch;margin:20px 0}
+  .flow-step{flex:1;min-width:120px;background:rgba(255,255,255,0.03);border:1px solid var(--dim);border-radius:8px;padding:14px 12px;text-align:center;position:relative}
+  .flow-step+.flow-step{margin-left:8px}
+  .flow-icon{font-size:20px;margin-bottom:6px;display:block}
+  .flow-label{font-size:12px;font-weight:700;color:var(--text)}
+  .flow-sub{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.4}
+  .arrow{display:flex;align-items:center;padding:0 4px;color:var(--dim);font-size:18px;flex-shrink:0;align-self:center}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:520px){.grid2{grid-template-columns:1fr}}
+  .card-sm{background:rgba(255,255,255,0.03);border:1px solid var(--dim);border-radius:10px;padding:16px}
+  .card-sm h3{font-size:14px;margin-bottom:6px}
+  .card-sm p{font-size:13px}
+  .pill-list{list-style:none;display:flex;flex-direction:column;gap:8px;margin-top:12px}
+  .pill-list li{display:flex;align-items:flex-start;gap:10px;font-size:14px;color:var(--muted);line-height:1.5}
+  .pill-list li::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;margin-top:7px;flex-shrink:0}
+  .green-dot::before{background:var(--accent)}
+  .blue-dot::before{background:var(--accent3)}
+  .orange-dot::before{background:var(--accent2)}
+  .compliance-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-top:16px}
+  .comp-item{border:1px solid var(--dim);border-radius:8px;padding:12px;text-align:center}
+  .comp-title{font-family:var(--mono);font-size:12px;font-weight:700;margin-bottom:4px}
+  .comp-desc{font-size:11px;color:var(--muted);line-height:1.4}
+  .cta-block{text-align:center;padding:8px 0}
+  .cta-block a{display:inline-block;font-family:var(--mono);font-size:13px;padding:12px 28px;border-radius:8px;text-decoration:none;margin:6px;border:1px solid;transition:opacity 0.2s}
+  .cta-green{background:rgba(0,212,170,0.12);color:var(--accent);border-color:var(--accent)}
+  .cta-blue{background:rgba(79,156,249,0.12);color:var(--accent3);border-color:var(--accent3)}
+  .divider{border:none;border-top:1px solid var(--dim);margin:20px 0}
+  .tech-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-top:16px}
+  .tech-item{border:1px solid var(--dim);border-radius:8px;padding:10px 12px}
+  .tech-layer{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px}
+  .tech-stack{font-size:12px;color:var(--muted);line-height:1.5}
+  .device-visual{display:flex;justify-content:center;margin:16px 0}
+  .device{background:var(--surface);border:2px solid var(--dim);border-radius:12px;padding:16px 20px;width:200px;text-align:center;position:relative}
+  .device-screen{background:#0a0e1a;border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:10px;min-height:80px;display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:center}
+  .screen-line{font-family:var(--mono);font-size:10px;color:var(--accent)}
+  .screen-line.warn{color:var(--accent2)}
+  .device-label{font-size:11px;color:var(--muted);font-family:var(--mono)}
+  .winner-bar{background:linear-gradient(135deg,rgba(0,212,170,0.12),rgba(79,156,249,0.08));border:1px solid rgba(0,212,170,0.3);border-radius:10px;padding:16px 20px;margin-bottom:16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .prize-num{font-family:var(--mono);font-size:32px;font-weight:700;color:var(--accent)}
+  .prize-label{font-size:14px;color:var(--muted)}
+</style>
+
+<div class="deck">
+
+  <div class="slide accent-multi">
+    <div class="tag tag-green">AI Skills Week Abuja 2026 · RegTech Hackathon</div>
+    <h1>EdgeAI-<span class="green">RegGuard</span></h1>
+    <p class="hero-sub">Privacy-first, offline KYC/AML compliance at the edge — bringing regulatory-grade fintech to Nigeria's last mile.</p>
+    <div class="badge-row">
+      <span class="badge">Team: 5 members</span>
+      <span class="badge green">On-device AI</span>
+      <span class="badge blue">CBN 2026 Compliant</span>
+      <span class="badge">NDPA Section 37</span>
+    </div>
+  </div>
+
+  <div class="slide accent-orange">
+    <div class="tag tag-orange">The Problem</div>
+    <h2>Nigeria's agents are locked out of compliance</h2>
+    <div class="stat-row">
+      <div class="stat"><div class="stat-num orange">60M+</div><div class="stat-label">unbanked Nigerians</div></div>
+      <div class="stat"><div class="stat-num orange">~40%</div><div class="stat-label">agents in low-connectivity zones</div></div>
+      <div class="stat"><div class="stat-num orange">High</div><div class="stat-label">CBN penalty exposure</div></div>
+      <div class="stat"><div class="stat-num orange">NDPA</div><div class="stat-label">data sovereignty violations</div></div>
+    </div>
+    <p>Cloud-based KYC systems cause latency failures, prohibitive data costs, and continuous transmission of sensitive biometric data — violating NDPA and leaving agents exposed to CBN enforcement when offline.</p>
+  </div>
+
+  <div class="slide accent-green">
+    <div class="tag tag-green">Our Solution</div>
+    <h2>Full compliance. Zero cloud. On-device.</h2>
+    <div class="flow">
+      <div class="flow-step">
+        <span class="flow-icon green">◈</span>
+        <div class="flow-label">Biometrics</div>
+        <div class="flow-sub">Face recognition + liveness detection</div>
+      </div>
+      <div class="arrow">›</div>
+      <div class="flow-step">
+        <span class="flow-icon blue">◈</span>
+        <div class="flow-label">ID OCR</div>
+        <div class="flow-sub">NIN, voter card, BVN via Tesseract</div>
+      </div>
+      <div class="arrow">›</div>
+      <div class="flow-step">
+        <span class="flow-icon orange">◈</span>
+        <div class="flow-label">Risk Score</div>
+        <div class="flow-sub">Anomaly detection, TinyML models</div>
+      </div>
+      <div class="arrow">›</div>
+      <div class="flow-step">
+        <span class="flow-icon green">◈</span>
+        <div class="flow-label">Local Ledger</div>
+        <div class="flow-sub">Encrypted compliance log, never leaves device</div>
+      </div>
+    </div>
+    <p>Sensitive data stays on-device. Only anonymized risk scores or high-risk alerts are uplinked via GSM/LoRa. Human-review hooks satisfy NDPA Section 37.</p>
+  </div>
+
+  <div class="slide accent-blue">
+    <div class="tag tag-blue">Architecture</div>
+    <h2>System design</h2>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start">
+      <div class="device-visual" style="margin:0">
+        <div class="device">
+          <div class="device-screen">
+            <div class="screen-line">▶ KYC scan OK</div>
+            <div class="screen-line">▶ OCR: NIN verified</div>
+            <div class="screen-line warn">⚠ Risk: LOW (0.12)</div>
+            <div class="screen-line">▶ Ledger: logged</div>
+          </div>
+          <div class="device-label">Raspberry Pi 5 Edge Unit</div>
+        </div>
+      </div>
+      <div style="flex:1;min-width:200px">
+        <div class="tech-grid">
+          <div class="tech-item">
+            <div class="tech-layer green">Hardware</div>
+            <div class="tech-stack">Raspberry Pi 5<br>Camera module<br>NFC reader<br>GSM/LoRa uplink</div>
+          </div>
+          <div class="tech-item">
+            <div class="tech-layer blue">ML Models</div>
+            <div class="tech-stack">TensorFlow Lite<br>Edge Impulse<br>Quantized XGBoost<br>TinyML anomaly</div>
+          </div>
+          <div class="tech-item">
+            <div class="tech-layer orange">Privacy</div>
+            <div class="tech-stack">Differential privacy<br>Local encryption<br>No biometric upload<br>Anon risk scores</div>
+          </div>
+          <div class="tech-item">
+            <div class="tech-layer green">Software</div>
+            <div class="tech-stack">Python / C++<br>Tesseract OCR<br>Flask dashboard<br>Offline-first</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide accent-green">
+    <div class="tag tag-green">Compliance Coverage</div>
+    <h2>Built for Nigeria's regulatory stack</h2>
+    <div class="compliance-row">
+      <div class="comp-item"><div class="comp-title green">CBN 2026</div><div class="comp-desc">Automated AML requirements for mobile money agents</div></div>
+      <div class="comp-item"><div class="comp-title blue">NDPA §37</div><div class="comp-desc">Right against solely automated decisions — human-review hooks built in</div></div>
+      <div class="comp-item"><div class="comp-title orange">KYC Tiers</div><div class="comp-desc">NIN, voter card, BVN OCR for CBN tiered KYC levels</div></div>
+      <div class="comp-item"><div class="comp-title green">Data Minimization</div><div class="comp-desc">NDPA-aligned: no raw biometrics ever transmitted</div></div>
+    </div>
+    <hr class="divider">
+    <div class="grid2">
+      <div class="card-sm">
+        <h3 class="green">Why edge-first wins</h3>
+        <ul class="pill-list">
+          <li class="green-dot">Works offline — no connectivity needed</li>
+          <li class="green-dot">Zero data transmission = zero NDPA risk</li>
+          <li class="green-dot">Sub-second response vs cloud latency</li>
+        </ul>
+      </div>
+      <div class="card-sm">
+        <h3 class="blue">Deployment model</h3>
+        <ul class="pill-list">
+          <li class="blue-dot">Fits existing POS/agent terminal form factor</li>
+          <li class="blue-dot">Low-cost hardware (~$60 Raspberry Pi 5)</li>
+          <li class="blue-dot">Regulator dashboard via Flask/FastAPI</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide accent-orange">
+    <div class="tag tag-orange">Impact</div>
+    <h2>Who benefits</h2>
+    <div class="grid2">
+      <div class="card-sm">
+        <h3 class="orange">Fintech agents</h3>
+        <ul class="pill-list">
+          <li class="orange-dot">Instant offline KYC — no dropped transactions</li>
+          <li class="orange-dot">No CBN penalty exposure</li>
+          <li class="orange-dot">Serve rural customers previously unreachable</li>
+        </ul>
+      </div>
+      <div class="card-sm">
+        <h3 class="orange">Regulators (CBN/NDPA)</h3>
+        <ul class="pill-list">
+          <li class="orange-dot">Automated, auditable compliance ledger</li>
+          <li class="orange-dot">Human-override on all AI decisions</li>
+          <li class="orange-dot">Privacy-by-design architecture</li>
+        </ul>
+      </div>
+    </div>
+    <div class="winner-bar" style="margin-top:16px">
+      <p style="flex:1;font-size:14px;color:var(--muted)">EdgeAI-RegGuard directly addresses Nigeria's financial inclusion gap by removing the compliance barrier for last-mile agents — exactly the bold, governance-focused thinking the RegTech Hackathon calls for.</p>
+    </div>
+  </div>
+
+</div>
